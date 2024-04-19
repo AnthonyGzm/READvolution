@@ -20,6 +20,5 @@ namespace READvolution.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Categoria>().HasIndex(c => c.Nombre).IsUnique();
         }
-
     }
 }
