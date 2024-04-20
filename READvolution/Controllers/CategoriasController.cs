@@ -2,22 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using READvolution.Models;
 using READvolution.Models.Entidades;
-using System.Diagnostics.Metrics;
 
 namespace READvolution.Controllers
 {
-    public class AutoresController : Controller
+    public class CategoriasController : Controller
+
     {
         private readonly READvolutionContext _context;
 
-        public AutoresController(READvolutionContext context)
+        public CategoriasController(READvolutionContext context)
         {
             _context = context;
         }
-
         public async Task<IActionResult> Lista()
         {
-            return View(await _context.Autores.ToListAsync());
+            return View(await _context.Categorias.ToListAsync());
         }
 
         public IActionResult Crear()
@@ -26,15 +25,15 @@ namespace READvolution.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crear(Autor autor)
+        public async Task<IActionResult> Crear(Categoria categoria)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Add(autor);
+                    _context.Add(categoria);
                     await _context.SaveChangesAsync();
-                    TempData["AlertMessage"] = "Autor creado exitosamente!!!";
+                    TempData["AlertMessage"] = "Categoria creada exitosamente!!!";
                     return RedirectToAction("Lista");
                 }
                 catch
@@ -42,28 +41,27 @@ namespace READvolution.Controllers
                     ModelState.AddModelError(String.Empty, "Ha ocurrido un error");
                 }
             }
-            return View(autor);
+            return View(categoria);
         }
-
         public async Task<IActionResult> Editar(int? id)
         {
-            if (id == null || _context.Autores == null)
+            if (id == null || _context.Categorias == null)
             {
                 return NotFound();
             }
 
-            var autor = await _context.Autores.FindAsync(id);
-            if (autor == null)
+            var categoria = await _context.Categorias.FindAsync(id);
+            if (categoria == null)
             {
                 return NotFound();
             }
-            return View(autor);
+            return View(categoria);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Editar(int id, Autor autor)
+        public async Task<IActionResult> Editar(int id, Categoria categoria)
         {
-            if (id != autor.Id)
+            if (id != categoria.Id)
             {
                 return NotFound();
             }
@@ -72,9 +70,9 @@ namespace READvolution.Controllers
             {
                 try
                 {
-                    _context.Update(autor);
+                    _context.Update(categoria);
                     await _context.SaveChangesAsync();
-                    TempData["AlertMessage"] = "Autor actualizado exitosamente!!!";
+                    TempData["AlertMessage"] = "Categoria actualizada exitosamente!!!";
                     return RedirectToAction("Lista");
                 }
                 catch (Exception ex)
@@ -83,29 +81,29 @@ namespace READvolution.Controllers
                     ModelState.AddModelError(ex.Message, "Ocurrio un error al actualizar");
                 }
             }
-            return View(autor);
+            return View(categoria);
         }
 
         public async Task<IActionResult> Eliminar(int? id)
         {
-            if (id == null || _context.Autores == null)
+            if (id == null || _context.Categorias == null)
             {
                 return NotFound();
             }
 
-            var autor = await _context.Autores
+            var categoria = await _context.Categorias
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (autor == null)
+            if (categoria == null)
             {
                 return NotFound();
             }
 
             try
             {
-                _context.Autores.Remove(autor);
+                _context.Categorias.Remove(categoria);
                 await _context.SaveChangesAsync();
-                TempData["AlertMessage"] = "Autor eliminado exitosamente!!!";
+                TempData["AlertMessage"] = "Categoria eliminada exitosamente!!!";
             }
             catch (Exception ex)
             {
@@ -114,6 +112,5 @@ namespace READvolution.Controllers
 
             return RedirectToAction(nameof(Lista));
         }
-
     }
 }
