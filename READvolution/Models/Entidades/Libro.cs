@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace READvolution.Models.Entidades
 {
@@ -24,6 +25,19 @@ namespace READvolution.Models.Entidades
         [Display(Name = "Imagen")]
 
         public string URLImagen { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un autor.")]
+        public int AutorId { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una categoria.")]
+        public int CategoriaId { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> Categorias { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> Autores { get; set; }
+
 
     }
 }

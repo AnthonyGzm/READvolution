@@ -15,6 +15,7 @@ namespace READvolution.Services
             var auth = new FirebaseAuthProvider(new FirebaseConfig(api_key));
             var a = await auth.SignInWithEmailAndPasswordAsync(email, clave);
 
+
             var cancellation = new CancellationTokenSource();
 
             var task = new FirebaseStorage(
