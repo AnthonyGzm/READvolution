@@ -3,7 +3,7 @@ using System.Text;
 
 namespace READvolution.Services
 {
-    public class Utilidad
+    public class Utilidades
     {
         public static string EncriptarClave(string clave)
         {
