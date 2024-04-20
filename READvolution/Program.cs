@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using READvolution.Models;
 using READvolution.Services;
@@ -12,9 +14,25 @@ builder.Services.AddDbContext<READvolutionContext>(options =>
 });
 
 builder.Services.AddScoped<lServicioLista, ServicioLista>();
-
+builder.Services.AddScoped<lServicioImagen, ServicioImagen>();
 builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.LoginPath = "/Login/IniciarSesion";
+                   options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+               });
 
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(
+        new ResponseCacheAttribute
+        {
+            NoStore = true,
+            Location = ResponseCacheLocation.None,
+        }
+       );
+});
 
 var app = builder.Build();
 
@@ -30,11 +48,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=IniciarSesion}/{id?}");
 
 app.Run();
