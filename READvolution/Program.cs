@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using READvolution.Models;
+using READvolution.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,11 @@ builder.Services.AddDbContext<READvolutionContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL"));
 });
+
+builder.Services.AddScoped<lServicioLista, ServicioLista>();
+
+builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+
 
 var app = builder.Build();
 
